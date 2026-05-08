@@ -51,3 +51,59 @@ ecommerce-web-app/
 │   ├── README.md                # Deployment overview
 │   └── module*.md               # Step-by-step modules
 └── install-prerequisites.sh     # Tool installation script
+
+```
+
+## Microservices
+
+- **Product Service** — Product catalog management (DynamoDB)
+- **Cart Service** — Shopping cart operations (DynamoDB)
+- **User Service** — User profile management (RDS PostgreSQL)
+- **Order Service** — Order processing and orchestration (RDS PostgreSQL)
+- **Notification Service** — Asynchronous email notifications (SNS/SQS/SES)
+
+## AWS Deployment
+
+The application deployment is organized into modular AWS infrastructure steps:
+
+- Module 0: Prerequisites
+- Module 1: Networking (VPC, Subnets, Security Groups)
+- Module 2: Authentication (Cognito)
+- Module 3: Frontend Infrastructure (S3, CloudFront)
+- Module 4: Data Layer (RDS, DynamoDB)
+- Module 5: Container Deployment (ECR, ECS/Fargate, ALB)
+- Module 6: API Gateway (HTTP API, VPC Link)
+- Module 7: Frontend-Backend Integration
+- Module 8: Notification (SNS, SQS)
+- Module 9: Custom Domain & SSL (Route53, ACM)
+- Module 10: Cleanup
+
+## Cost Estimates
+
+- **AWS Deployment**: Costs vary depending on usage and active resources.
+
+> Remember to clean up AWS resources after testing to avoid unnecessary charges.
+
+## Getting Started
+
+1. Proceed to [AWS Deployment](deployment/README.md)
+2. Configure required AWS resources
+3. Deploy services module-by-module
+4. Clean up resources after completion
+
+## Tech Stack
+
+- React
+- Python FastAPI
+- AWS ECS/Fargate
+- API Gateway
+- Cognito
+- DynamoDB
+- PostgreSQL
+- SNS/SQS
+- CloudFront
+- Route53
+
+## License
+
+This project is for educational and development purposes.
