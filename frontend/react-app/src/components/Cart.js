@@ -1,18 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import { useCart } from '../CartContext';
+import { getImageUrl, getProductImage } from '../utils';
 import './Cart.css';
 
 function Cart({ user, onSignInClick }) {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const [productsById, setProductsById] = useState({});
   const { refreshCartCount } = useCart();
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
   useEffect(() => {
     if (user) loadCart();
     else setLoading(false);
   }, [user]);
+
+  const loadProducts = async () => {
+    try {
+      const products = await api.getProducts();
+      const map = {};
+      products.forEach(product => {
+        const id = product.product_id || product.id;
+        if (id) map[id] = product;
+      });
+      setProductsById(map);
+    } catch (error) {
+      console.error('Error loading product lookup for cart:', error);
+    }
+  };
 
   const loadCart = async () => {
     try {
@@ -73,19 +93,32 @@ function Cart({ user, onSignInClick }) {
       ) : (
         <>
           <div className="cart-items">
-            {cart.items.map(item => (
-              <div key={item.product_id} className="cart-item">
-                <div className="item-info">
-                  <h3>Product: {item.product_id}</h3>
-                  <p>Quantity: {item.quantity}</p>
-                  <p className="price">${item.price} each</p>
+            {cart.items.map(item => {
+              const itemId = item.product_id || item.id;
+              const product = productsById[itemId];
+              const productImage = product ? getImageUrl(getProductImage(product)) : null;
+
+              return (
+                <div key={itemId} className="cart-item">
+                  {productImage && (
+                    <div className="cart-item-image">
+                      <img src={productImage} alt={product.name} />
+                    </div>
+                  )}
+                  <div className="item-info">
+                    <h3>{product?.name || itemId}</h3>
+                    {!product?.name && <small className="item-id">{itemId}</small>}
+                    {product?.description && <p className="item-description">{product.description}</p>}
+                    <p>Quantity: {item.quantity}</p>
+                    <p className="price">${Number(item.price).toFixed(2)} each</p>
+                  </div>
+                  <div className="item-actions">
+                    <p className="subtotal">${(Number(item.price) * item.quantity).toFixed(2)}</p>
+                    <button onClick={() => handleRemove(itemId)}>Remove</button>
+                  </div>
                 </div>
-                <div className="item-actions">
-                  <p className="subtotal">${(item.price * item.quantity).toFixed(2)}</p>
-                  <button onClick={() => handleRemove(item.product_id)}>Remove</button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           
           <div className="cart-summary">

@@ -12,8 +12,8 @@ function Navbar({ signOut, user, onSignInClick }) {
     <nav className="navbar">
       <div className="nav-brand">
         <Link to="/" className="brand-link">
-          <img src={logo} alt="eCommerce Logo" className="logo" />
-          <span>eCommerce Store</span>
+          <img src={logo} alt="CloudCart Logo" className="logo" />
+          <span>CloudCart</span>
         </Link>
       </div>
       <div className="nav-center">
@@ -26,12 +26,12 @@ function Navbar({ signOut, user, onSignInClick }) {
       </div>
       <div className="nav-right">
         <a 
-          href="https://www.awswithchetan.com" 
+          href="https://shubhamjoshi.xyz" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="website-link"
+          className="portfolio-link"
         >
-          🌐 awswithchetan.com
+          ← Portfolio
         </a>
         {user ? (
           <div className="user-info">

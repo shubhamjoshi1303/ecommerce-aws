@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import { useCart } from '../CartContext';
+import { getImageUrl, getProductImage } from '../utils';
 import './Products.css';
 
 function Products({ user, onSignInClick }) {
@@ -43,11 +44,36 @@ function Products({ user, onSignInClick }) {
 
   return (
     <div className="products">
+      <div className="hero-section">
+        <div className="hero-content">
+          <h1 className="hero-title">Cloud-native commerce, built on AWS.</h1>
+          <p className="hero-subtitle">
+            Modern ecommerce powered by scalable microservices, secure authentication, and globally distributed infrastructure.
+          </p>
+          <div className="hero-buttons">
+            <button className="hero-btn primary" onClick={() => window.scrollTo({ top: document.querySelector('.product-grid').offsetTop - 100, behavior: 'smooth' })}>
+              Shop Products
+            </button>
+            <button className="hero-btn secondary" onClick={() => window.open('https://github.com/shubhamjoshi1303/ecommerce-aws', '_blank', 'noopener')}>
+              View Architecture
+            </button>
+          </div>
+          <div className="architecture-strip">
+            {['API Gateway', 'ECS Fargate', 'Cognito', 'DynamoDB', 'RDS', 'S3', 'CloudFront'].map((item) => (
+              <span key={item} className="arch-pill">{item}</span>
+            ))}
+          </div>
+        </div>
+        <div className="hero-bg"></div>
+      </div>
       {message && <div className="message">{message}</div>}
+      <section className="featured-products">
+        <h2>Featured Products</h2>
+      </section>
       <div className="product-grid">
         {products.map(product => (
           <div key={product.product_id} className="product-card">
-            <img src={product.image_url} alt={product.name} />
+            <img src={getImageUrl(getProductImage(product))} alt={product.name} />
             <h3>{product.name}</h3>
             <p>{product.description}</p>
             <div className="product-footer">
